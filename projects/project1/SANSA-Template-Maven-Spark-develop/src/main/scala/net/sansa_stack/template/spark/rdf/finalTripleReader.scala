@@ -25,10 +25,6 @@ object finalTripleReader {
     println(preprocessingTimeB)
     println("Preprocessing Time :" + (preprocessingTimeB.atZone(ZoneId.systemDefault()).toEpochSecond() - preprocessingTimeA.atZone(ZoneId.systemDefault()).toEpochSecond()))
     println("-------- End of Data Preprocessing --------")
-    println()
-    //println("Entities and blocking keys")
-    //dataset.foreach(println)
-    //println()
     
     //Combination Based Blocking
     println("-------- Start of Combination Based Blocking --------")
@@ -39,10 +35,6 @@ object finalTripleReader {
     println(combinationTimeB)
     println("Combination Based Blocking Time :" + (combinationTimeB.atZone(ZoneId.systemDefault()).toEpochSecond() - combinationTimeA.atZone(ZoneId.systemDefault()).toEpochSecond()))
     println("-------- End of Combination Based Blocking --------")
-    println()
-    //println("Result from Combinations Based Blocking Phase:")
-    //combinationResults.foreach(println)
-    //println()
     
     //Load-Balanced Matching
     println("-------- Start of Load-Balanced Matching --------")
@@ -53,7 +45,6 @@ object finalTripleReader {
     println(loadTimeB)
     println("Load-Balanced Matching Time :" + (loadTimeB.atZone(ZoneId.systemDefault()).toEpochSecond() - loadTimeA.atZone(ZoneId.systemDefault()).toEpochSecond()))
     println("-------- End of Load-Balanced Matching --------")
-    println()
     
     //Printing the Results
     println("Result:")
@@ -74,13 +65,6 @@ object finalTripleReader {
       x._2.foreach(s => s.replaceAll("""[\p{Punct}&&[^.]]""", ""))
       (x._1,x._2) 
       })
-    /*val lines = sc.textFile("/main/resources/sample.txt")
-    val firstRdd = lines.map(x => {
-     val word = x.split("-")
-     (word(0),word(1))
-    })
-    val secondRdd = firstRdd.groupByKey()
-    val finalDataset = secondRdd.map(x => (x._1, x._2.toList))*/
     return finalDataset
   }
   
@@ -97,8 +81,6 @@ object finalTripleReader {
   def loadBalancedMatching(combinationResults:RDD[(List[String],List[String])],dataset:RDD[(String,List[String])]):RDD[(String,String)]={
     val loadMapResults1 = combinationResults.flatMap(parseLoadMap)
     val loadMapResults = loadMapResults1.distinct()
-    //println("Result from map:")
-    //loadMapResults.take(5).foreach(println)
  
     val parseloadMapUniqueResults = loadMapResults.map(f => {
       val x = f.mkString(",")
